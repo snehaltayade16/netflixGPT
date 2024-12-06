@@ -10,7 +10,7 @@ const  Login =()=>{
                 <form className=" bg-black text-white p-10 max-w-md w-full mx-auto my-auto right-0 left-0">
                     <input type="text" placeholder="Enter Email Address"></input>
                     <input type="password" placeholder="Enter Password"></input>
-                    <button>Sign Inn</button>
+                    <button>Sign In</button>
                 </form>
             </div>
         </div>
