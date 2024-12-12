@@ -2,19 +2,76 @@ import Header from './header';
 import Footer from './footer';
 import { useState,useRef } from 'react';
 import checkValidation from './valiadtion'
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile } from "firebase/auth";
+import {auth} from "../firebase/firebase"
+import { useNavigate } from 'react-router-dom';
+
 const  Login =()=>{
     const [isSignInForm,isSetSignInForm]=useState(true)
     const [showErrorMsg,SetErrorMessage]=useState(null)
     const email=useRef(null)
     const password=useRef(null)
-
+    const name=useRef(null)
+    const navigate=useNavigate()
     const toogleSignInForm=()=>{
         isSetSignInForm(!isSignInForm)
     }
-
     const validateForm=()=>{
         const message=checkValidation(email.current.value,password.current.value)
         SetErrorMessage(message)
+        if(message) return
+        console.log(isSignInForm);
+        if(!isSignInForm)
+        {
+            //sign up 
+            createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+            .then((userCredential) => {
+            // Signed up 
+            const user = userCredential.user;
+            updateProfile(user,{
+                displayName: name.current.value, 
+                photoURL: "https://example.com/jane-q-user/profile.jpg"
+              }).then(() => {
+                navigate('/browse')
+                // ...
+              }).catch((error) => {
+                SetErrorMessage(error.message)
+              });
+              // ...
+            })
+            .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            SetErrorMessage(errorCode + '-' +errorMessage)
+            // ..
+            });
+        }
+        else {
+            //sign in
+            signInWithEmailAndPassword(auth, email.current.value,password.current.value)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log("sign in",user)
+                navigate('/browse')
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode);
+                if(errorCode==='auth/invalid-credential')
+                {
+                    console.log("eeeeeeeeeeee");
+                    const customErrorMessage='User not found'
+                    SetErrorMessage(customErrorMessage)
+                }
+                else{
+                    SetErrorMessage(errorCode + '-' +errorMessage)
+                }
+            });
+        }
+        //sign up
     }
     return(
         <div className="relative">
@@ -33,16 +90,15 @@ const  Login =()=>{
                         
                         {
                             !isSignInForm && (
-                                <input type="text" placeholder="Enter Full Name" className='mt-4 pt-6 pb-2 pr-4 pl-4 text-[#ffffff] bg-[#141311a3]'></input>
+                                <input ref={name} type="text" placeholder="Enter Full Name" className='mt-4 pt-6 pb-2 pr-4 pl-4 text-[#ffffff] bg-[#141311a3]'></input>
                             )
                         }
                         <input ref={email} type="text" placeholder="Enter Email or mobile number" className='mt-4 pt-6 pb-2 pr-4 pl-4 text-[#ffffff] bg-[#141311a3]'></input>
                             {/* <p className='text-red-600'>{showErrorMsg}</p> */}
                         <input ref={password}  type="password" placeholder="Enter Password" className='mt-4 pt-6 pb-2 pr-4 pl-4 text-[#ffffff] bg-[#141311a3]'></input>
-                            <p className='text-red-600'>{showErrorMsg}</p>
-                        
+                            <p className='text-red-600 mt-4'>{showErrorMsg}</p>
                             {
-                               isSignInForm ? <button className='mt-4 bg-red-600 p-3 text-base font-medium rounded-md ' onClick={validateForm}>Sign In </button>:<button className='mt-4 bg-red-600 p-3 text-base font-medium rounded-md ' onClick={validateForm}>Sign Up</button>
+                                isSignInForm ? <button className='mt-4 bg-red-600 p-3 text-base font-medium rounded-md ' onClick={validateForm}>Sign In </button>:<button className='mt-4 bg-red-600 p-3 text-base font-medium rounded-md ' onClick={validateForm}>Sign Up</button>
                             }
 
                         <p className='text-center mt-4 text-[#ffffff80]'>OR</p>

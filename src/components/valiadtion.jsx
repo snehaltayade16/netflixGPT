@@ -9,6 +9,7 @@ const checkValidation=(email,password)=>{
     {
         return 'Invalid password'
     }
+    
     return null
 }
 export default checkValidation
