@@ -5,6 +5,7 @@ import checkValidation from './valiadtion'
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {auth} from "../firebase/firebase"
 import { useNavigate } from 'react-router-dom';
+import { addUser } from '../redux/userSlice';
 
 const  Login =()=>{
     const [isSignInForm,isSetSignInForm]=useState(true)
@@ -12,7 +13,9 @@ const  Login =()=>{
     const email=useRef(null)
     const password=useRef(null)
     const name=useRef(null)
+    // console.log(name);
     const navigate=useNavigate()
+
     const toogleSignInForm=()=>{
         isSetSignInForm(!isSignInForm)
     }
@@ -20,20 +23,29 @@ const  Login =()=>{
         const message=checkValidation(email.current.value,password.current.value)
         SetErrorMessage(message)
         if(message) return
-        console.log(isSignInForm);
+        // console.log(isSignInForm);
+
         if(!isSignInForm)
         {
-            //sign up 
+            //sign up first time user
             createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
             .then((userCredential) => {
             // Signed up 
             const user = userCredential.user;
+            //update user profile 
             updateProfile(user,{
                 displayName: name.current.value, 
                 photoURL: "https://example.com/jane-q-user/profile.jpg"
               }).then(() => {
-                navigate('/browse')
-                // ...
+                // console.log(auth);
+                const{uid,email,displayName,photoURL,}=auth.currentUser
+                dispatch(addUser({
+                    uid:uid,
+                    email:email,
+                    displayName:displayName,
+                    photoURL:photoURL
+                })
+            )// ...
               }).catch((error) => {
                 SetErrorMessage(error.message)
               });
@@ -52,17 +64,17 @@ const  Login =()=>{
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                console.log("sign in",user)
+                // console.log("sign in",user)
                 navigate('/browse')
                 // ...
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode);
+                // console.log(errorCode);
                 if(errorCode==='auth/invalid-credential')
                 {
-                    console.log("eeeeeeeeeeee");
+                    // console.log("eeeeeeeeeeee");
                     const customErrorMessage='User not found'
                     SetErrorMessage(customErrorMessage)
                 }

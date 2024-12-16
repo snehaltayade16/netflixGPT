@@ -24,26 +24,6 @@ function Body() {
       element:<Browse/>
     }
   ])
- 
-  //firbase/build/authentication/manage user
-  useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const {email,uid,displayName,photoUrl}=user
-            dispatch(addUser({uid:uid,email:email,displayName:displayName,photoUrl:photoUrl}))
-
-           // redirect to browser page when user login
-        //    navigate ('/browse')
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/auth.user
-        //   const uid = user.uid;
-          // ...
-        } else {
-            dispatch(removeUser())
-            // navigate ('/')
-        }
-      });
-  } ,[])
   return (
     <div>
       <RouterProvider router={appRouter} />
