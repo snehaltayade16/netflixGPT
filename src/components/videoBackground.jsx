@@ -12,7 +12,7 @@ const VedioBackground =({movieId})=>{
        
     return(
         <div className='w-screen h-screen relative bg-black'>
-            <iframe className='w-screen h-screen aspect-video object-cover opacity-50' src={"https://www.youtube.com/embed/"+vedioData?.key} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+        <iframe className='w-screen h-screen aspect-video object-cover opacity-50'   src={`https://www.youtube.com/embed/${vedioData?.key}?autoplay=1&mute=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen autoPlay></iframe>
         </div>
     )
 }

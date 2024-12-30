@@ -8,11 +8,11 @@ const customHooksOFBackgroundVedio = (movieId)=>
     const dispatch=useDispatch()
     const getMoviesVideos = async () =>{
         const data = await fetch('https://api.themoviedb.org/3/movie/'+movieId+'/videos?language=en-US', API_OPTIONS)
-        console.log(data);
+        // console.log(data);
         const json=await data.json()
         const filterData =json.results.filter((res)=>res.type == "Trailer")
         const trailer=filterData.length ? filterData[0]:json.results[0]
-        console.log(trailer);
+        // console.log(trailer);
         dispatch(MoviesTrailer(trailer))
         }
            

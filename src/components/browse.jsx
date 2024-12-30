@@ -4,6 +4,7 @@ import Header from "./header"
 import { useDispatch } from "react-redux"
  import {addNowPlayingMovies} from "../redux/MovieSlice"
  import MainContainer from "./MainContainer"
+import MovieListContainer from "./MovieListContainer"
 
 const Browse =()=>{
     const dispatch = useDispatch()
@@ -17,9 +18,12 @@ const Browse =()=>{
         getNowPlayingMovies()
     },[])
     return(
-        <div>
-            <Header/>
-            <MainContainer/>
+        <div className="relative">
+            {/* <div className="absolute z-20 w-full">
+                <Header/>
+            </div>
+            <MainContainer/> */}
+            <MovieListContainer/>
         </div>
     )
 }

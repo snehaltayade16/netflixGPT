@@ -17,7 +17,7 @@ const Header=()=>{
     // console.log(user);
 
     const userSignOut=()=>{
-        console.log('sign out');
+        // console.log('sign out');
         signOut(auth).then(() => {
             }).catch((error) => {
             navigate('/error')
@@ -29,7 +29,7 @@ const Header=()=>{
         // console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         //firbase/build/authentication/manage user
     const unsubscribe=onAuthStateChanged(auth, (user) => {
-        console.log("eeeeeeeeeeeeeeeeeeeee");
+        // console.log("eeeeeeeeeeeeeeeeeeeee");
         if (user) {
             // console.log(user);
             
@@ -57,10 +57,8 @@ const Header=()=>{
         
         <header className='px-20  w-full pb-6 z-20'>
             <div className='px-10 mx-auto flex items-center justify-between'>
-                {/* <img className='w-44' src={Logo}></img> */}
-                {/* <p>{user.}</p> */}
-                {/* <img className='w-44' src={Logo}></img> */}
-                <button onClick={userSignOut}>Sign Out</button>
+                <img className='w-44' src={Logo}></img>
+                <button onClick={userSignOut} className="text-white">Sign Out</button>
                 {/* <button onClick={()=>userSignOut()}>Sign Out</button>
                 <button onClick={userSignOut()}>Sign Out</button> */}
             </div>
